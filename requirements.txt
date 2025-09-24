@@ -1,7 +1,5 @@
 flask
-transformers
-torch                # or install appropriate torch for your machine
-sentencepiece
+sumy
 textblob
 emoji
 language-tool-python
