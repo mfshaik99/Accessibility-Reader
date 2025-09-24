@@ -1,40 +1,66 @@
-from flask import Flask, render_template, request, jsonify
+import os
+from flask import Flask, render_template, request, jsonify, send_from_directory
+from werkzeug.utils import secure_filename
 from modules import summarizer, enhancer, emoji_adder, tts, stt
 
+UPLOAD_FOLDER = "uploads"
+AUDIO_FOLDER = "static/audio"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(AUDIO_FOLDER, exist_ok=True)
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['AUDIO_FOLDER'] = AUDIO_FOLDER
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
-@app.route('/summarize', methods=['POST'])
+@app.route("/summarize", methods=["POST"])
 def summarize_text():
-    text = request.form['text']
-    summary = summarizer.summarize(text)
-    return jsonify({'result': summary})
+    text = request.form.get("text", "")
+    result = summarizer.summarize(text)
+    return jsonify({"result": result})
 
-@app.route('/enhance', methods=['POST'])
+@app.route("/enhance", methods=["POST"])
 def enhance_text():
-    text = request.form['text']
-    enhanced = enhancer.enhance(text)
-    return jsonify({'result': enhanced})
+    text = request.form.get("text", "")
+    result = enhancer.enhance(text)
+    return jsonify({"result": result})
 
-@app.route('/emoji', methods=['POST'])
+@app.route("/emoji", methods=["POST"])
 def add_emoji():
-    text = request.form['text']
-    emoji_text = emoji_adder.add_emoji(text)
-    return jsonify({'result': emoji_text})
+    text = request.form.get("text", "")
+    result = emoji_adder.add_emoji(text)
+    return jsonify({"result": result})
 
-@app.route('/tts', methods=['POST'])
+@app.route("/tts", methods=["POST"])
 def text_to_speech():
-    text = request.form['text']
-    tts_path = tts.speak(text)
-    return jsonify({'audio': tts_path})
+    text = request.form.get("text", "")
+    filename = tts.speak(text, out_dir=app.config['AUDIO_FOLDER'])
+    if not filename:
+        return jsonify({"error": "No text provided"}), 400
+    return jsonify({"audio_url": f"/{app.config['AUDIO_FOLDER']}/{filename}"})
 
-@app.route('/stt', methods=['GET'])
+@app.route("/stt", methods=["POST"])
 def speech_to_text():
-    recognized_text = stt.listen()
-    return jsonify({'result': recognized_text})
+    # receives uploaded audio file from browser (wav/webm)
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    f = request.files['file']
+    if f.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+    filename = secure_filename(f.filename)
+    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    f.save(path)
+    # convert/recognize
+    text = stt.transcribe_file(path)
+    return jsonify({"result": text})
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# serve created audio
+@app.route('/static/audio/<path:filename>')
+def serve_audio(filename):
+    return send_from_directory(app.config['AUDIO_FOLDER'], filename)
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
