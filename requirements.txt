@@ -1,0 +1,7 @@
+Flask
+sumy
+gensim
+pyttsx3
+speechrecognition
+emoji
+language-tool-python
