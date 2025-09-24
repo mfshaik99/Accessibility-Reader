@@ -44,7 +44,6 @@ def text_to_speech():
 
 @app.route("/stt", methods=["POST"])
 def speech_to_text():
-    # receives uploaded audio file from browser (wav/webm)
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
     f = request.files['file']
@@ -53,14 +52,13 @@ def speech_to_text():
     filename = secure_filename(f.filename)
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     f.save(path)
-    # convert/recognize
     text = stt.transcribe_file(path)
     return jsonify({"result": text})
 
-# serve created audio
 @app.route('/static/audio/<path:filename>')
 def serve_audio(filename):
     return send_from_directory(app.config['AUDIO_FOLDER'], filename)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))   # Render port
+    app.run(host="0.0.0.0", port=port)
