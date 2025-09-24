@@ -1,32 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>AI-Powered Accessibility Reader</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Accessibility Reader</title>
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-  <div class="card">
-    <h1>AI-Powered Accessibility Reader 🧠✨</h1>
+    <div class="container">
+        <h1>✨ AI Powered Accessibility Reader ✨</h1>
 
-    <textarea id="inputText" placeholder="Paste or type text here..."></textarea>
+        <div class="feature-selection">
+            <label for="feature">Choose a feature:</label>
+            <select id="feature">
+                <option value="summarize">Summarize Text</option>
+                <option value="enhance">Enhance Text</option>
+                <option value="emoji">Add Emojis</option>
+                <option value="tts">Text to Speech</option>
+                <option value="stt">Speech to Text</option>
+            </select>
+        </div>
 
-    <div class="controls">
-      <button id="summBtn">Summarize</button>
-      <button id="enhBtn">Enhance</button>
-      <button id="emojiBtn">Add Emojis</button>
-      <button id="ttsBtn">Read Aloud</button>
-      <button id="recBtn" class="mic">🎤 Record</button>
+        <div class="input-area">
+            <textarea id="textInput" placeholder="Paste text here..."></textarea>
+            <input type="file" id="audioInput" accept="audio/*" style="display:none;">
+        </div>
+
+        <button id="processBtn">🚀 Process</button>
+
+        <div class="output-area" id="outputArea">
+            <h3>Output:</h3>
+            <div id="outputText"></div>
+            <audio id="audioPlayer" controls style="display:none;"></audio>
+        </div>
     </div>
 
-    <div id="micStatus" class="mic-status">Click 🎤 to record (will upload to server)</div>
-
-    <div id="output" class="output"></div>
-
-    <audio id="player" controls style="display:none;"></audio>
-  </div>
-
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="static/script.js"></script>
 </body>
 </html>
