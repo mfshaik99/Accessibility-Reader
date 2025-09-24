@@ -1,7 +1,12 @@
-Flask
-sumy
-gensim
-pyttsx3
-speechrecognition
+flask
+transformers
+torch                # or install appropriate torch for your machine
+sentencepiece
+textblob
 emoji
 language-tool-python
+gTTS
+pyttsx3
+SpeechRecognition
+pydub
+werkzeug
