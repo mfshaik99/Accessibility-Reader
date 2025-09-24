@@ -1,0 +1,19 @@
+:root { --accent:#6a11cb; --accent2:#2575fc; --bg1:#f8fbff; }
+* { box-sizing: border-box; }
+body {
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background: linear-gradient(135deg,#eef2ff,#f8fbff);
+  display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0;
+}
+.card {
+  width: 92%; max-width:900px; background:#fff; padding:28px; border-radius:16px; box-shadow:0 12px 40px rgba(12,30,60,0.08);
+}
+h1 { margin:0 0 12px; font-size:20px; color:#111827; }
+textarea { width:100%; min-height:160px; padding:12px; border-radius:10px; border:1px solid #e6eef8; resize:vertical; font-size:15px; }
+.controls { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+button { background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#fff; padding:10px 14px; border:none; border-radius:10px; cursor:pointer; font-weight:600; }
+button.mic { background: #ff4d4d; }
+button:active { transform:translateY(1px); }
+.mic-status { margin-top:10px; color:#4b5563; font-size:14px; }
+.output { margin-top:16px; white-space:pre-wrap; background:#f7f9fc; padding:12px; border-radius:8px; border:1px solid #eef2ff; min-height:60px; color:#0f172a; }
+audio { margin-top:12px; width:100%; }
