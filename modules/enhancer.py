@@ -1,8 +1,7 @@
 from textblob import TextBlob
 
 def enhance(text):
-    if not text or not text.strip():
+    if not text.strip():
         return "⚠️ No text provided."
-    blob = TextBlob(text)
-    corrected = str(blob.correct())  # correct spelling
+    corrected = str(TextBlob(text).correct())
     return corrected
