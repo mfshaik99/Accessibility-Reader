@@ -2,7 +2,7 @@ import google.generativeai as genai
 from google.api_core.exceptions import ResourceExhausted
 
 # ⚠️ Since you said private repo, key is hardcoded
-GOOGLE_API_KEY = "AIzaSyBDE9A2uZOZ1kqSSLJsqwtw24uQPS8XA18"
+GOOGLE_API_KEY = "YOUR_API_KEY_HERE"
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
